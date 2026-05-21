@@ -977,46 +977,46 @@ export default function App() {
             }}
             className="absolute inset-0 z-0 overflow-hidden bg-mango origin-center transform-gpu"
           >
-            <motion.div style={{ opacity: blobsOpacity }} className="absolute inset-0 saturate-[1.2]">
-              {/* Animated Mango Blobs */}
+            <motion.div style={{ opacity: blobsOpacity }} className="absolute inset-0">
+              {/* Animated Mango Blobs - Optimized for performance */}
               <motion.div 
-                className="absolute top-[-30%] left-[-20%] w-[140vw] h-[140vw] max-w-[1200px] max-h-[1200px] rounded-full mix-blend-overlay"
+                className="absolute top-[-30%] left-[-20%] w-[140vw] h-[140vw] max-w-[1200px] max-h-[1200px] rounded-full"
                 style={{
-                  background: 'radial-gradient(circle, var(--color-saffron) 0%, transparent 60%)',
-                  filter: 'blur(100px)',
+                  background: 'radial-gradient(circle, rgba(235, 178, 59, 0.4) 0%, rgba(235, 178, 59, 0) 60%)',
+                  willChange: 'transform',
+                }}
+                animate={{
+                  scale: [1, 1.1, 1],
+                  x: ['0%', '5%', '0%'],
+                  y: ['0%', '5%', '0%'],
+                }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <motion.div 
+                className="absolute bottom-[-20%] right-[-20%] w-[120vw] h-[120vw] max-w-[1000px] max-h-[1000px] rounded-full opacity-60"
+                style={{
+                  background: 'radial-gradient(circle, rgba(219, 137, 43, 0.5) 0%, rgba(219, 137, 43, 0) 60%)',
+                  willChange: 'transform',
                 }}
                 animate={{
                   scale: [1, 1.2, 1],
-                  x: ['0%', '10%', '0%'],
-                  y: ['0%', '10%', '0%'],
+                  x: ['0%', '-10%', '0%'],
+                  y: ['0%', '-5%', '0%'],
                 }}
-                transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+                transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
               />
               <motion.div 
-                className="absolute bottom-[-20%] right-[-20%] w-[120vw] h-[120vw] max-w-[1000px] max-h-[1000px] rounded-full mix-blend-multiply opacity-80"
+                className="absolute top-[20%] right-[10%] w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full opacity-50"
                 style={{
-                  background: 'radial-gradient(circle, var(--color-mango-ripe) 0%, transparent 60%)',
-                  filter: 'blur(120px)',
+                  background: 'radial-gradient(circle, rgba(246, 244, 240, 0.5) 0%, rgba(246, 244, 240, 0) 70%)',
+                  willChange: 'transform',
                 }}
                 animate={{
                   scale: [1, 1.3, 1],
                   x: ['0%', '-15%', '0%'],
-                  y: ['0%', '-5%', '0%'],
+                  y: ['0%', '15%', '0%'],
                 }}
-                transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              <motion.div 
-                className="absolute top-[20%] right-[10%] w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full mix-blend-screen opacity-70"
-                style={{
-                  background: 'radial-gradient(circle, var(--color-cloud) 0%, transparent 70%)',
-                  filter: 'blur(100px)',
-                }}
-                animate={{
-                  scale: [1, 1.5, 1],
-                  x: ['0%', '-20%', '0%'],
-                  y: ['0%', '20%', '0%'],
-                }}
-                transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+                transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut' }}
               />
             </motion.div>
 
@@ -1030,8 +1030,11 @@ export default function App() {
             
             {/* Grain Overlay */}
             <div 
-              className="absolute inset-0 pointer-events-none opacity-[0.25] mix-blend-overlay" 
-              style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
+              className="absolute inset-0 pointer-events-none opacity-[0.08]" 
+              style={{ 
+                backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
+                transform: 'translateZ(0)'
+              }}
             ></div>
 
             <motion.div style={{ opacity: effectOpacity }} className="absolute inset-0 bg-gradient-to-b from-transparent via-saffron/10 to-saffron/40 z-0"></motion.div>

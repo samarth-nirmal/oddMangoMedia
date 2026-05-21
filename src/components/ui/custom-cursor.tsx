@@ -55,7 +55,7 @@ export const CustomCursor = () => {
         backgroundColor: isMango ? "#FFFF00" : "#F4A460", // Yellow over saffron text results in green in difference mode
       }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[9999] mix-blend-difference`}
+      className={`hidden md:block fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[9999] mix-blend-difference`}
     />
   );
 };

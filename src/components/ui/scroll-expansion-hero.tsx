@@ -163,14 +163,14 @@ const ScrollExpandMedia = ({
           className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none"
         >
           <motion.div
-            style={{ x: textXLeft, opacity: textOpacity }}
-            className="font-black text-white text-4xl md:text-6xl uppercase tracking-tighter text-center filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+            style={{ x: textXLeft, opacity: textOpacity, textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+            className="font-black text-white text-4xl md:text-6xl uppercase tracking-tighter text-center"
           >
             {firstWord}
           </motion.div>
           <motion.div
-            style={{ x: textXRight, opacity: textOpacity }}
-            className="font-black text-white text-3xl md:text-5xl uppercase tracking-tighter text-center filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] mt-1"
+            style={{ x: textXRight, opacity: textOpacity, textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+            className="font-black text-white text-3xl md:text-5xl uppercase tracking-tighter text-center mt-1"
           >
             {restOfTitle}
           </motion.div>

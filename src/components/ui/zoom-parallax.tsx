@@ -39,7 +39,7 @@ export function ZoomParallax({ images, scrollContainer }: ZoomParallaxProps) {
 					return (
 						<motion.div
 							key={index}
-							style={{ scale }}
+							style={{ scale, willChange: 'transform' }}
 							className={`absolute top-0 flex h-full w-full items-center justify-center 
 								${index === 1 ? '[&>div]:!-top-[25vh] [&>div]:!left-[15vw] md:[&>div]:!-top-[30vh] md:[&>div]:!left-[5vw] [&>div]:!h-[20vh] [&>div]:!w-[25vw] md:[&>div]:!h-[30vh] md:[&>div]:!w-[35vw]' : ''} 
 								${index === 2 ? '[&>div]:!-top-[5vh] [&>div]:!-left-[30vw] md:[&>div]:!-top-[10vh] md:[&>div]:!-left-[25vw] [&>div]:!h-[30vh] [&>div]:!w-[15vw] md:[&>div]:!h-[45vh] md:[&>div]:!w-[20vw]' : ''} 
@@ -49,7 +49,7 @@ export function ZoomParallax({ images, scrollContainer }: ZoomParallaxProps) {
 								${index === 6 ? '[&>div]:!top-[15vh] [&>div]:!left-[30vw] md:[&>div]:!top-[22.5vh] md:[&>div]:!left-[25vw] [&>div]:!h-[10vh] [&>div]:!w-[10vw] md:[&>div]:!h-[15vh] md:[&>div]:!w-[15vw]' : ''} 
 							`}
 						>
-							<div className="relative h-[15vh] w-[15vw] md:h-[25vh] md:w-[25vw]">
+							<div className="relative h-[25vh] w-[25vw] md:h-[35vh] md:w-[35vw]">
 								<img
 									src={src || '/placeholder.svg'}
 									alt={alt || `Parallax image ${index + 1}`}

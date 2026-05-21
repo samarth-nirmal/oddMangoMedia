@@ -17,9 +17,6 @@ const EXISTING_IMAGES = [
 // Repeat to ensure the marquee has enough images to loop infinitely without gaps
 const IMAGES = [
   ...EXISTING_IMAGES,
-  ...EXISTING_IMAGES,
-  ...EXISTING_IMAGES,
-  ...EXISTING_IMAGES,
 ];
 
 export function ImageShowcase() {
@@ -41,6 +38,7 @@ export function ImageShowcase() {
                 src={`${import.meta.env.BASE_URL}${imageUrl}`}
                 className="size-full object-cover"
                 referrerPolicy="no-referrer"
+                loading="lazy"
               />
             </div>
           ))}
@@ -60,6 +58,7 @@ export function ImageShowcase() {
                 src={`${import.meta.env.BASE_URL}${imageUrl}`}
                 className="size-full object-cover"
                 referrerPolicy="no-referrer"
+                loading="lazy"
               />
             </div>
           ))}

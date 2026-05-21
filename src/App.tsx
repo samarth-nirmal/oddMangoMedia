@@ -277,7 +277,7 @@ function FeaturedWorksSection({ containerRef }: { containerRef: React.RefObject<
                         <div className="absolute inset-0 bg-mango/0 group-hover:bg-mango/10 transition-colors duration-300" />
                       </div>
                     </CardHoverRevealMain>
-                    <CardHoverRevealContent className="rounded-none bg-mango/95 backdrop-blur-xs p-6 m-0 inset-0 flex flex-col justify-center items-center translate-x-0 translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 text-midnight">
+                    <CardHoverRevealContent className="rounded-none bg-mango/95 p-6 m-0 inset-0 flex flex-col justify-center items-center translate-x-0 translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 text-midnight">
                       <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-midnight flex items-center justify-center shadow-lg transform transition-all duration-300 scale-90 group-hover:scale-100 group-hover:rotate-6">
                         <Play className="text-mango w-5 h-5 md:w-6 md:h-6 fill-current ml-0.5" />
                       </div>
@@ -303,7 +303,7 @@ function FeaturedWorksSection({ containerRef }: { containerRef: React.RefObject<
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-xl"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md"
             onClick={() => setSelectedProject(null)}
           >
             {/* Minimalist sharp close button */}
@@ -1365,15 +1365,17 @@ function ShortFilmSection() {
         {/* Subtle background glows simulating the reference image's soft lighting */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 0.2, scale: 1 } : { opacity: 0, scale: 0.8 }}
+          animate={isInView ? { opacity: 0.6, scale: 1 } : { opacity: 0, scale: 0.8 }}
           transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] bg-[#3a4020] rounded-full mix-blend-screen filter blur-[120px] pointer-events-none" 
+          className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] rounded-full pointer-events-none" 
+          style={{ background: 'radial-gradient(circle, rgba(94, 102, 53, 0.5) 0%, transparent 70%)', transform: 'translateZ(0)' }}
         />
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 0.2, scale: 1 } : { opacity: 0, scale: 0.8 }}
+          animate={isInView ? { opacity: 0.5, scale: 1 } : { opacity: 0, scale: 0.8 }}
           transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-          className="absolute top-[0%] -right-[10%] w-[50%] h-[50%] bg-[#2a2e18] rounded-full mix-blend-screen filter blur-[120px] pointer-events-none" 
+          className="absolute top-[0%] -right-[10%] w-[50%] h-[50%] rounded-full pointer-events-none" 
+          style={{ background: 'radial-gradient(circle, rgba(72, 78, 43, 0.5) 0%, transparent 70%)', transform: 'translateZ(0)' }}
         />
         
         <div className="relative z-10 flex flex-col lg:flex-row gap-12 lg:gap-20 items-center justify-between">

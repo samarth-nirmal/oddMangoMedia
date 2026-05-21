@@ -38,7 +38,7 @@ export function ImageShowcase() {
             >
               <img
                 alt="agency showcase"
-                src={imageUrl}
+                src={`${import.meta.env.BASE_URL}${imageUrl}`}
                 className="size-full object-cover"
                 referrerPolicy="no-referrer"
               />
@@ -57,7 +57,7 @@ export function ImageShowcase() {
             >
               <img
                 alt="agency showcase"
-                src={imageUrl}
+                src={`${import.meta.env.BASE_URL}${imageUrl}`}
                 className="size-full object-cover"
                 referrerPolicy="no-referrer"
               />

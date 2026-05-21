@@ -167,7 +167,7 @@ export function InteractiveCard({ isOpen, onClose }: InteractiveCardProps) {
                 >
                   {/* Real Texture Layer */}
                   <img
-                    src="cardside1.png"
+                    src={`${import.meta.env.BASE_URL}cardside1.png`}
                     alt="Odd Mango card front side"
                     className="w-full h-full object-cover select-none pointer-events-none absolute inset-0 z-0 bg-graphite"
                   />
@@ -204,7 +204,7 @@ export function InteractiveCard({ isOpen, onClose }: InteractiveCardProps) {
                 >
                   {/* Real Texture Layer */}
                   <img
-                    src="cardside2.png"
+                    src={`${import.meta.env.BASE_URL}cardside2.png`}
                     alt="Odd Mango card back side"
                     className="w-full h-full object-cover select-none pointer-events-none absolute inset-0 z-0 bg-graphite"
                   />

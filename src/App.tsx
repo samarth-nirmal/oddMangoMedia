@@ -269,7 +269,7 @@ function FeaturedWorksSection({ containerRef }: { containerRef: React.RefObject<
                         <video
                           src={`${import.meta.env.BASE_URL}${(slide as any).videoUrl}#t=0.5`}
                           className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          preload="auto"
+                          preload="metadata"
                           loop
                           muted
                           playsInline
@@ -564,13 +564,13 @@ function WhyChooseUsSection() {
               whileInView={{ opacity: 1, y: 0, scale: 1 - (benefits.length - i) * 0.02 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="sticky top-[15vh] w-full aspect-[4/5] p-8 md:p-12 mb-8 shadow-2xl overflow-hidden first:mt-0"
+              className="sticky top-[12vh] w-full min-h-[55vh] h-auto p-6 md:p-12 mb-8 shadow-2xl overflow-hidden first:mt-0 flex flex-col"
               style={{ 
                 backgroundColor: benefit.color,
                 zIndex: i + 1,
               }}
             >
-              <div className="relative z-10 h-full flex flex-col justify-between">
+              <div className="relative z-10 flex-1 flex flex-col justify-between gap-6">
                 <div className="space-y-3">
                   <span className={cn("text-base font-mono font-normal", benefit.textColor)}>0{i+1}</span>
                   <h2 className={cn("text-2xl font-black uppercase tracking-tighter leading-none break-words", benefit.textColor)}>
@@ -973,7 +973,8 @@ export default function App() {
           <motion.div 
             style={{ 
               scale: imageScale,
-              borderRadius: imageBorderRadius
+              borderRadius: imageBorderRadius,
+              willChange: 'transform, border-radius'
             }}
             className="absolute inset-0 z-0 overflow-hidden bg-mango origin-center transform-gpu"
           >
@@ -1183,6 +1184,7 @@ export default function App() {
                 muted
                 loop
                 playsInline
+                preload="metadata"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -1433,6 +1435,7 @@ function ShortFilmSection() {
                 frameBorder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 referrerPolicy="strict-origin-when-cross-origin" 
+                loading="lazy"
                 allowFullScreen
               ></iframe>
             </motion.div>

@@ -6,7 +6,7 @@ import React, {
   useEffect,
   ReactNode,
 } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring, useInView } from 'motion/react';
 
 interface ScrollExpandMediaProps {
   mediaType?: 'video' | 'image';
@@ -34,7 +34,21 @@ const ScrollExpandMedia = ({
   scrollContainer,
 }: ScrollExpandMediaProps) => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  
+  // Conditionally play/pause video when in view to save performance
+  const isInView = useInView(sectionRef, { margin: "200px 0px 200px 0px" });
+
+  useEffect(() => {
+    if (mediaType === 'video' && videoRef.current) {
+      if (isInView) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isInView, mediaType]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -108,17 +122,19 @@ const ScrollExpandMedia = ({
             borderRadius,
             maxWidth: '100vw',
             maxHeight: '100vh',
+            willChange: 'width, height, border-radius',
           }}
           className="relative z-10 overflow-hidden flex items-center justify-center bg-graphite"
         >
           {mediaType === 'video' ? (
             <video
+              ref={videoRef}
               src={mediaSrc}
               poster={posterSrc}
-              autoPlay
               muted
               loop
               playsInline
+              preload="metadata"
               className="w-full h-full object-cover"
             />
           ) : (

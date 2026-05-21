@@ -10,7 +10,8 @@ import {
   useTransform,
   useVelocity,
   useSpring,
-  useAnimationFrame
+  useAnimationFrame,
+  useMotionValue
 } from 'motion/react';
 
 interface ScrollXCarouselContextValue {
@@ -76,7 +77,7 @@ export function ScrollXCarouselWrap({
   return (
     <motion.div
       className={cn('w-fit', className)}
-      style={{ x, ...style }}
+      style={{ x, ...style, willChange: 'transform' }}
       {...props}
     />
   );
@@ -118,7 +119,7 @@ export function ContinuousScrollWrap({
     clamp: false
   });
 
-  const [xVal, setXVal] = React.useState(0);
+  const x = useMotionValue(0);
 
   // Function to wrap values between min and max
   const wrap = (min: number, max: number, v: number) => {
@@ -141,14 +142,16 @@ export function ContinuousScrollWrap({
     
     // Wrap around -50% to 0% since we duplicate the content twice.
     const xWrapped = wrap(-50, 0, baseX.current);
-    setXVal(xWrapped);
+    x.set(xWrapped);
   });
+  
+  const xTransform = useTransform(x, (val) => `${val}%`);
 
   return (
     <div className="overflow-hidden w-full flex">
       <motion.div
         className="flex w-max space-x-0 mx-0"
-        style={{ x: `${xVal}%`, ...style }}
+        style={{ x: xTransform, willChange: 'transform', ...style }}
         {...props}
       >
         <div className={cn("flex shrink-0 items-center justify-start", className)}>{children}</div>

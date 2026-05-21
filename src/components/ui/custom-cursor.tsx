@@ -7,12 +7,26 @@ export const CustomCursor = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isMango, setIsMango] = useState(false);
 
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    };
+    
+    checkMobile(); // Check on mount
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Smooth out the movement with a spring transition, make it smoother
   const springConfig = { damping: 30, stiffness: 120, mass: 0.8 };
   const cursorX = useSpring(mouseX, springConfig);
   const cursorY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
+    if (isMobile) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       // Position it a bit away from the real cursor
       mouseX.set(e.clientX + 30);
@@ -42,7 +56,9 @@ export const CustomCursor = () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseover', handleMouseOver);
     };
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <motion.div

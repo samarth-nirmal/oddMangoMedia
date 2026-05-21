@@ -5,13 +5,13 @@ import {
 } from "./scroll-x-carousel";
 
 const EXISTING_IMAGES = [
-  '/showcase-images/33.png',
-  '/showcase-images/34.png',
-  '/showcase-images/35.png',
-  '/showcase-images/36.png',
-  '/showcase-images/37.png',
-  '/showcase-images/38.png',
-  '/showcase-images/43.png',
+  'showcase-images/33.png',
+  'showcase-images/34.png',
+  'showcase-images/35.png',
+  'showcase-images/36.png',
+  'showcase-images/37.png',
+  'showcase-images/38.png',
+  'showcase-images/43.png',
 ];
 
 // Repeat to ensure the marquee has enough images to loop infinitely without gaps

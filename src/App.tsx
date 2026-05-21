@@ -791,13 +791,13 @@ const TEAM_MEMBERS = [
   {
     name: "Omkar Janvekar",
     role: "Founder",
-    image: "/founder1.jpg",
+    image: "founder1.jpg",
     bio: "Visionary behind the digital language of Odd Mango. Crafting narratives that resonate."
   },
   {
     name: "Raghvendra Joshi",
     role: "Founder",
-    image: "/founder2.jpeg",
+    image: "founder2.jpeg",
     bio: "Co-founder shaping narratives through story and visual art. Bringing meaning to content."
   }
 ];
@@ -952,7 +952,7 @@ export default function App() {
               {/* Logo Wrapper */}
               <div className="flex items-center justify-center">
                 <img 
-                  src="/mango-logo.png" 
+                  src="mango-logo.png" 
                   alt="Loading Logo" 
                   className="w-56 h-auto sm:w-72 md:w-[384px] lg:w-[420px] object-contain filter sepia-[100%] saturate-[1000%] hue-rotate-[15deg] brightness-[1.15] contrast-[1.2]" 
                 />
@@ -1025,7 +1025,7 @@ export default function App() {
               className="absolute inset-0 flex items-center justify-center pointer-events-none"
             >
               {/* To counteract the parent's scale shrink to 0.3, we can either InverseScale or just let it be responsive. At 0.3 scale, a 100% width logo turns into 30% width. Let's make it look like a nice centered card logo. */}
-              <img src="/mango-logo-orange.png" alt="Mango Logo" className="w-[60%] h-[60%] md:w-[40%] md:h-[40%] object-contain" />
+              <img src="mango-logo-orange.png" alt="Mango Logo" className="w-[60%] h-[60%] md:w-[40%] md:h-[40%] object-contain" />
             </motion.div>
             
             {/* Grain Overlay */}
@@ -1045,7 +1045,7 @@ export default function App() {
           className="relative flex justify-between items-start text-midnight"
         >
           <div className="cursor-pointer hover:opacity-75 transition-opacity -ml-4 -mt-3 md:-ml-8 md:-mt-6 lg:-ml-12">
-            <img src="/mango-logo.png" alt="Mango Logo" className="h-20 sm:h-28 md:h-36 lg:h-40 object-contain" />
+            <img src="mango-logo.png" alt="Mango Logo" className="h-20 sm:h-28 md:h-36 lg:h-40 object-contain" />
           </div>
           
           <div onClick={() => scrollTo('contact-us')} className="flex items-center gap-2 md:gap-3 cursor-pointer group hover:opacity-85 transition-opacity">
@@ -1175,7 +1175,7 @@ export default function App() {
           <div className="w-full px-6 py-12 bg-cloud">
             <div className="aspect-video w-full rounded-2xl overflow-hidden">
               <video
-                src="/showcase/Parallax%20Video.mp4"
+                src="showcase/Parallax%20Video.mp4"
                 autoPlay
                 muted
                 loop
@@ -1191,7 +1191,7 @@ export default function App() {
         ) : (
           <ScrollExpandMedia
             mediaType="video"
-            mediaSrc="/showcase/Parallax%20Video.mp4"
+            mediaSrc="showcase/Parallax%20Video.mp4"
             posterSrc="https://images.pexels.com/videos/5752729/space-earth-universe-cosmos-5752729.jpeg"
             bgImageSrc="https://me7aitdbxq.ufs.sh/f/2wsMIGDMQRdYMNjMlBUYHaeYpxduXPVNwf8mnFA61L7rkcoS"
             title="WHO ARE WE?"

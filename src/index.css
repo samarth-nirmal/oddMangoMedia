@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  --color-mango: #FFB000;
+  --color-mango-ripe: #FF8A00;
+  --color-saffron: #F26A1B;
+  --color-midnight: #0E0E10;
+  --color-graphite: #1C1C21;
+  --color-cloud: #F7F7F5;
+  --color-leaf: #6BAF3A;
+  --color-mango-faint: #FFF9EF;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

@@ -31,7 +31,7 @@ const SLIDES = [
     services: ['motion', 'vfx', '3d'],
     type: 'Cinematic',
     imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
-    videoUrl: '/showcase/Shoecasev1.mp4',
+    videoUrl: 'showcase/Shoecasev1.mp4',
   },
   {
     id: 'slide-2',
@@ -41,7 +41,7 @@ const SLIDES = [
     services: ['simulation', 'direction', 'art'],
     type: 'Commercial',
     imageUrl: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800&auto=format&fit=crop',
-    videoUrl: '/showcase/Shoecasev2.mp4',
+    videoUrl: 'showcase/Shoecasev2.mp4',
   },
   {
     id: 'slide-3',
@@ -51,7 +51,7 @@ const SLIDES = [
     services: ['cinematography', 'grading', 'vfx'],
     type: 'Short Film',
     imageUrl: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=800&auto=format&fit=crop',
-    videoUrl: '/showcase/Shoecasev3.mp4',
+    videoUrl: 'showcase/Shoecasev3.mp4',
   },
   {
     id: 'slide-4',
@@ -61,7 +61,7 @@ const SLIDES = [
     services: ['3d modeling', 'vfx', 'design'],
     type: 'Exhibition',
     imageUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop',
-    videoUrl: '/showcase/Shoecasev4.mp4',
+    videoUrl: 'showcase/Shoecasev4.mp4',
   },
   {
     id: 'slide-5',
@@ -71,7 +71,7 @@ const SLIDES = [
     services: ['macro', 'vfx', '3d'],
     type: 'Product Film',
     imageUrl: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=800&auto=format&fit=crop',
-    videoUrl: '/showcase/Showcasev5.mp4',
+    videoUrl: 'showcase/Showcasev5.mp4',
   },
 ];
 
@@ -267,7 +267,7 @@ function FeaturedWorksSection({ containerRef }: { containerRef: React.RefObject<
                     <CardHoverRevealMain className="rounded-none">
                       <div className="relative size-full overflow-hidden">
                         <video
-                          src={`${(slide as any).videoUrl}#t=0.5`}
+                          src={`${import.meta.env.BASE_URL}${(slide as any).videoUrl}#t=0.5`}
                           className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
                           preload="auto"
                           loop
@@ -325,7 +325,7 @@ function FeaturedWorksSection({ containerRef }: { containerRef: React.RefObject<
             >
               <video
                 key={selectedProject.id}
-                src={(selectedProject as any).videoUrl}
+                src={`${import.meta.env.BASE_URL}${(selectedProject as any).videoUrl}`}
                 controls
                 playsInline
                 autoPlay={true}

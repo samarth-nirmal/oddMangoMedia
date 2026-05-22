@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   ScrollXCarousel,
   ScrollXCarouselContainer,
@@ -21,13 +20,6 @@ const IMAGES = [
 ];
 
 export function ImageShowcase() {
-  useEffect(() => {
-    EXISTING_IMAGES.forEach(imageUrl => {
-      const img = new Image();
-      img.src = `${import.meta.env.BASE_URL}${imageUrl}`;
-    });
-  }, []);
-
   return (
     <ScrollXCarousel className="w-full bg-cloud py-12 md:py-24 h-auto">
       <ScrollXCarouselContainer className="relative place-content-center flex flex-col space-y-4 md:space-y-8 !sticky max-h-none h-auto">

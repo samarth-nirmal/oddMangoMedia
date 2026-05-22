@@ -380,16 +380,6 @@ function ServicesSection() {
   const [activeService, setActiveService] = useState<string | null>(null);
   const [hoveredService, setHoveredService] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Preload service images
-    SERVICES.forEach(service => {
-      service.images.forEach(imgUrl => {
-        const img = new Image();
-        img.src = imgUrl;
-      });
-    });
-  }, []);
-
   return (
     <div id="services" data-toc data-toc-title="Services" className="w-full bg-midnight/[0.03] pt-24 pb-24 md:pt-36 md:pb-40 px-6 overflow-hidden relative border-t border-midnight/5">
       <div className="max-w-[1800px] mx-auto flex flex-col items-center">
@@ -863,14 +853,6 @@ const TEAM_MEMBERS = [
 
 function MeetTheTeamSection() {
   const sectionRef = useRef(null);
-  
-  useEffect(() => {
-    // Preload team member images to reduce layout shifts and ensure high-quality versions are ready
-    TEAM_MEMBERS.forEach(member => {
-      const img = new Image();
-      img.src = `${import.meta.env.BASE_URL}${member.image}`;
-    });
-  }, []);
   
   return (
     <div id="team" data-toc data-toc-title="Team" ref={sectionRef} className="w-full py-24 md:py-40 px-6 md:px-12 bg-cloud text-midnight relative overflow-hidden">

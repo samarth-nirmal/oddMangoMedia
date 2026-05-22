@@ -10,6 +10,34 @@ import Lenis from 'lenis';
 import { FloatingPaths } from './components/ui/background-paths';
 import { HoverImageReveal } from './components/ui/hover-image-reveal';
 import { ZoomParallax } from './components/ui/zoom-parallax';
+
+// Sub-component for playing video only when in view
+const ScrollVideo = ({ src }: { src: string }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const isInView = motionUseInView(videoRef, { margin: "200px 0px 200px 0px" });
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isInView) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isInView]);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      className="w-full h-full object-cover"
+    />
+  );
+};
 import ScrollExpandMedia from './components/ui/scroll-expansion-hero';
 import { ScrollXCarousel, ScrollXCarouselContainer, ScrollXCarouselWrap } from "./components/ui/scroll-x-carousel";
 import { CardHoverReveal, CardHoverRevealContent, CardHoverRevealMain } from './components/ui/reveal-on-hover'
@@ -76,8 +104,9 @@ const SLIDES = [
 ];
 
 const Letter = ({ children, index, className }: { children: React.ReactNode, index: number, className?: string }) => (
-  <motion.span
+    <motion.span
     initial={{ opacity: 0, x: -40 }}
+    style={{ willChange: 'transform, opacity' }}
     animate={{ opacity: 1, x: 0 }}
     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: index * 0.12 + 5.0 }}
     className={`inline-block ${className || ""}`}
@@ -234,6 +263,7 @@ function FeaturedWorksSection({ containerRef }: { containerRef: React.RefObject<
         {/* Bottom Row */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
+          style={{ willChange: 'transform, opacity' }}
           animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
           transition={{ delay: 0.4, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="w-full flex flex-row justify-between items-center pt-4 md:pt-6 gap-2"
@@ -356,6 +386,7 @@ function ServicesSection() {
             <motion.div 
             key={index} 
             initial={{ opacity: 0, y: 40 }}
+            style={{ willChange: 'transform, opacity' }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10% 0px" }}
             transition={{ 
@@ -417,6 +448,7 @@ function ServicesSection() {
                         <img 
                           src={img} 
                           alt={service.title} 
+                          loading="lazy"
                           className="size-full object-cover grayscale hover:grayscale-0 transition-all duration-300 ease-out hover:scale-110" 
                         />
                       </motion.div>
@@ -497,6 +529,7 @@ function WhyChooseUsSection() {
               <div className="max-w-7xl w-full grid grid-cols-2 gap-24 items-center relative z-10">
                 <motion.div 
                   initial={{ opacity: 0, y: 50 }}
+                  style={{ willChange: 'transform, opacity' }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -530,6 +563,7 @@ function WhyChooseUsSection() {
 
                 <motion.div 
                   initial={{ opacity: 0, y: 60, scale: 0.95 }}
+                  style={{ willChange: 'transform, opacity' }}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
@@ -540,6 +574,7 @@ function WhyChooseUsSection() {
                     alt={benefit.title} 
                     className="w-full h-full object-cover" 
                     referrerPolicy="no-referrer"
+                    loading="lazy"
                   />
                 </motion.div>
               </div>
@@ -561,6 +596,7 @@ function WhyChooseUsSection() {
             <motion.div 
               key={`mobile-${i}`}
               initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              style={{ willChange: 'transform, opacity' }}
               whileInView={{ opacity: 1, y: 0, scale: 1 - (benefits.length - i) * 0.02 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -598,6 +634,7 @@ function WhyChooseUsSection() {
                   alt={benefit.title} 
                   className="w-full h-full object-cover" 
                   referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
               </div>
             </motion.div>
@@ -741,7 +778,7 @@ function TransformationSection() {
           }}
           className="absolute inset-0 bg-leaf flex flex-col justify-center p-8 md:p-16 z-10 text-white"
         >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2000')] bg-cover bg-center opacity-[0.15] mix-blend-overlay pointer-events-none" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2000')] bg-cover bg-center opacity-[0.10] pointer-events-none" />
           
           <div className="relative z-10 flex flex-col md:flex-row gap-12 md:gap-8 justify-between h-full">
             <div className="flex-1 space-y-6">
@@ -955,6 +992,7 @@ export default function App() {
                   src={`${import.meta.env.BASE_URL}mango-logo.png`} 
                   alt="Loading Logo" 
                   className="w-56 h-auto sm:w-72 md:w-[384px] lg:w-[420px] object-contain filter sepia-[100%] saturate-[1000%] hue-rotate-[15deg] brightness-[1.15] contrast-[1.2]" 
+                  fetchPriority="high"
                 />
               </div>
             </div>
@@ -973,12 +1011,11 @@ export default function App() {
           <motion.div 
             style={{ 
               scale: imageScale,
-              borderRadius: imageBorderRadius,
-              willChange: 'transform, border-radius'
+              borderRadius: imageBorderRadius
             }}
             className="absolute inset-0 z-0 overflow-hidden bg-mango origin-center transform-gpu"
           >
-            <motion.div style={{ opacity: blobsOpacity }} className="absolute inset-0">
+            <motion.div style={{ opacity: blobsOpacity, willChange: 'opacity' }} className="absolute inset-0">
               {/* Animated Mango Blobs - Optimized for performance */}
               <motion.div 
                 className="absolute top-[-30%] left-[-20%] w-[140vw] h-[140vw] max-w-[1200px] max-h-[1200px] rounded-full"
@@ -1022,23 +1059,13 @@ export default function App() {
             </motion.div>
 
             <motion.div 
-              style={{ opacity: logoOpacity }} 
+              style={{ opacity: logoOpacity, willChange: 'opacity' }} 
               className="absolute inset-0 flex items-center justify-center pointer-events-none"
             >
-              {/* To counteract the parent's scale shrink to 0.3, we can either InverseScale or just let it be responsive. At 0.3 scale, a 100% width logo turns into 30% width. Let's make it look like a nice centered card logo. */}
-              <img src={`${import.meta.env.BASE_URL}mango-logo-orange.png`} alt="Mango Logo" className="w-[60%] h-[60%] md:w-[40%] md:h-[40%] object-contain" />
+              <img src={`${import.meta.env.BASE_URL}mango-logo-orange.png`} alt="Mango Logo" className="w-[60%] h-[60%] md:w-[40%] md:h-[40%] object-contain" fetchPriority="high" />
             </motion.div>
-            
-            {/* Grain Overlay */}
-            <div 
-              className="absolute inset-0 pointer-events-none opacity-[0.08]" 
-              style={{ 
-                backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
-                transform: 'translateZ(0)'
-              }}
-            ></div>
 
-            <motion.div style={{ opacity: effectOpacity }} className="absolute inset-0 bg-gradient-to-b from-transparent via-saffron/10 to-saffron/40 z-0"></motion.div>
+            <motion.div style={{ opacity: effectOpacity, willChange: 'opacity' }} className="absolute inset-0 bg-gradient-to-b from-transparent via-saffron/10 to-saffron/40 z-0"></motion.div>
           </motion.div>
 
         {/* Top Header */}
@@ -1075,13 +1102,13 @@ export default function App() {
               transition={{ delay: 5.0, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               className="flex-1 flex-wrap sm:flex-nowrap text-[12vw] sm:text-[10.5vw] md:text-[9.5vw] lg:text-[8.5vw] xl:text-[8.5vw] 2xl:text-[10rem] font-medium tracking-[-0.03em] leading-[1.1]"
             >
-              <motion.div style={{ y: textY }} className="flex text-midnight drop-shadow-sm">
+              <motion.div style={{ y: textY, willChange: 'transform' }} className="flex text-midnight">
                 <Letter index={0}>O</Letter>
                 <Letter index={1}>d</Letter>
                 <Letter index={2}>d</Letter>
               </motion.div>
               
-              <motion.div style={{ y: textY, color: mangoWordColor }} className="flex group/mango drop-shadow-sm" data-cursor-mango="true">
+              <motion.div style={{ y: textY, color: mangoWordColor, willChange: 'transform' }} className="flex group/mango" data-cursor-mango="true">
                 <Letter index={3}>m</Letter>
                 <Letter index={4}>a</Letter>
                 <Letter index={5}>n</Letter>
@@ -1104,7 +1131,7 @@ export default function App() {
                 </div>
               </motion.div>
               
-              <motion.div style={{ y: textY }} className="flex text-midnight drop-shadow-sm">
+              <motion.div style={{ y: textY, willChange: 'transform' }} className="flex text-midnight">
                 <Letter index={8}>m</Letter>
                 <Letter index={9}>e</Letter>
                 <Letter index={10}>d</Letter>
@@ -1116,7 +1143,7 @@ export default function App() {
           </div>
           
           <motion.div
-            style={{ y: bottomTextY, opacity: bottomTextOpacity }}
+            style={{ y: bottomTextY, opacity: bottomTextOpacity, willChange: 'transform, opacity' }}
             className="absolute bottom-[10vh] md:bottom-[15vh] left-0 right-0 flex justify-center text-midnight z-[100] px-6 text-center pointer-events-none"
           >
             <p className="text-lg md:text-xl lg:text-2xl text-black uppercase tracking-[0.2em]">
@@ -1130,6 +1157,7 @@ export default function App() {
       {/* Navigation - Now below hero and non-sticky */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
+        style={{ willChange: 'transform, opacity' }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 5.4, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-50 w-full h-[60px] md:h-[70px] bg-cloud flex justify-between items-center px-6 md:px-8 font-normal text-[10px] md:text-[12px] uppercase tracking-[0.1em] text-midnight border-b border-graphite/10"
@@ -1178,15 +1206,7 @@ export default function App() {
         {isMobile ? (
           <div className="w-full px-6 py-12 bg-cloud">
             <div className="aspect-video w-full rounded-2xl overflow-hidden">
-              <video
-                src={`${import.meta.env.BASE_URL}showcase/parallax-video.mp4`}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                className="w-full h-full object-cover"
-              />
+              <ScrollVideo src={`${import.meta.env.BASE_URL}showcase/parallax-video.mp4`} />
             </div>
             <div className="mt-8 text-center">
                <h2 className="text-3xl font-black uppercase tracking-tighter text-midnight">WHO ARE WE?</h2>
@@ -1235,6 +1255,7 @@ export default function App() {
         <div className="text-left font-black text-[12vw] sm:text-[11vw] md:text-[10vw] flex flex-col leading-[0.85] tracking-tighter max-w-[95vw] md:max-w-[90vw] mx-auto z-10">
           <motion.div 
             initial={{ opacity: 0, x: -150 }} 
+            style={{ willChange: 'transform, opacity' }}
             whileInView={{ opacity: 1, x: 0 }} 
             viewport={{ once: true, margin: "-50px" }} 
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -1245,6 +1266,7 @@ export default function App() {
           
           <motion.div 
             initial={{ opacity: 0, x: 150 }} 
+            style={{ willChange: 'transform, opacity' }}
             whileInView={{ opacity: 1, x: 0 }} 
             viewport={{ once: true, margin: "-50px" }} 
             transition={{ duration: 1.2, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
@@ -1255,6 +1277,7 @@ export default function App() {
           
           <motion.div 
             initial={{ opacity: 0, x: -150 }} 
+            style={{ willChange: 'transform, opacity' }}
             whileInView={{ opacity: 1, x: 0 }} 
             viewport={{ once: true, margin: "-50px" }} 
             transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
@@ -1265,6 +1288,7 @@ export default function App() {
           
           <motion.div 
             initial={{ opacity: 0, x: 150 }} 
+            style={{ willChange: 'transform, opacity' }}
             whileInView={{ opacity: 1, x: 0 }} 
             viewport={{ once: true, margin: "-50px" }} 
             transition={{ duration: 1.2, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -1275,6 +1299,7 @@ export default function App() {
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }} 
+            style={{ willChange: 'transform, opacity' }}
             whileInView={{ opacity: 1, y: 0 }} 
             viewport={{ once: true }} 
             transition={{ duration: 1.2, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -1357,6 +1382,7 @@ function ShortFilmSection() {
     <div ref={sectionRef} className="relative w-full py-16 md:py-32 px-4 md:px-8 bg-cloud flex flex-col justify-start">
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
+        style={{ willChange: 'transform, opacity' }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         whileHover={{ borderColor: "rgba(255,255,255,0.12)", y: -4 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -1365,17 +1391,17 @@ function ShortFilmSection() {
         {/* Subtle background glows simulating the reference image's soft lighting */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
+          style={{ background: 'radial-gradient(circle, rgba(94, 102, 53, 0.5) 0%, transparent 70%)', transform: 'translateZ(0)', willChange: 'transform, opacity' }}
           animate={isInView ? { opacity: 0.6, scale: 1 } : { opacity: 0, scale: 0.8 }}
           transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] rounded-full pointer-events-none" 
-          style={{ background: 'radial-gradient(circle, rgba(94, 102, 53, 0.5) 0%, transparent 70%)', transform: 'translateZ(0)' }}
         />
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
+          style={{ background: 'radial-gradient(circle, rgba(72, 78, 43, 0.5) 0%, transparent 70%)', transform: 'translateZ(0)', willChange: 'transform, opacity' }}
           animate={isInView ? { opacity: 0.5, scale: 1 } : { opacity: 0, scale: 0.8 }}
           transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
           className="absolute top-[0%] -right-[10%] w-[50%] h-[50%] rounded-full pointer-events-none" 
-          style={{ background: 'radial-gradient(circle, rgba(72, 78, 43, 0.5) 0%, transparent 70%)', transform: 'translateZ(0)' }}
         />
         
         <div className="relative z-10 flex flex-col lg:flex-row gap-12 lg:gap-20 items-center justify-between">
@@ -1384,6 +1410,7 @@ function ShortFilmSection() {
           <div className="w-full lg:w-5/12 flex flex-col gap-4 md:gap-6 order-2 lg:order-1">
             <motion.h3 
               initial={{ opacity: 0, y: 30 }}
+              style={{ willChange: 'transform, opacity' }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="text-3xl md:text-5xl font-normal tracking-tight text-white leading-tight"
@@ -1393,6 +1420,7 @@ function ShortFilmSection() {
             
             <motion.p 
               initial={{ opacity: 0, y: 30 }}
+              style={{ willChange: 'transform, opacity' }}
               animate={isInView ? { opacity: 0.6, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="text-sm md:text-base font-medium text-white leading-relaxed max-w-sm mt-1"
@@ -1402,6 +1430,7 @@ function ShortFilmSection() {
 
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
+              style={{ willChange: 'transform, opacity' }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="pt-4"
@@ -1457,6 +1486,7 @@ function ContactSection() {
     <div id="contact-us" ref={sectionRef} className="w-full bg-[#E6E4DD] text-midnight font-sans px-4 md:px-8 py-16 md:py-32 rounded-t-[2rem] md:rounded-t-[4rem] relative z-20 overflow-hidden">
       <motion.div 
         initial={{ opacity: 0, y: 40 }}
+        style={{ willChange: 'transform, opacity' }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-16 lg:gap-12 justify-between"
@@ -1626,6 +1656,7 @@ function LetsTalkBanner() {
     <div ref={sectionRef} className="w-full bg-leaf overflow-hidden py-6 md:py-10 border-t border-midnight/10">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
+        style={{ willChange: 'transform, opacity' }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
         transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
       >
@@ -1667,6 +1698,7 @@ function FooterSection({
     <div id="footer" ref={sectionRef} className="w-full bg-[#E6E4DD] text-midnight font-sans overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: 60 }}
+        style={{ willChange: 'transform, opacity' }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       >

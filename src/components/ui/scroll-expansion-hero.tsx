@@ -102,7 +102,7 @@ const ScrollExpandMedia = ({
         
         {/* Ambient Background Image */}
         <motion.div
-          style={{ opacity: bgOpacity }}
+          style={{ opacity: bgOpacity, willChange: 'opacity' }}
           className="absolute inset-4 top-4 md:inset-10 md:top-6 z-0 rounded-3xl md:rounded-[3rem] overflow-hidden"
         >
           <img
@@ -122,7 +122,7 @@ const ScrollExpandMedia = ({
             borderRadius,
             maxWidth: '100vw',
             maxHeight: '100vh',
-            willChange: 'width, height, border-radius',
+            willChange: 'width, height, border-radius'
           }}
           className="relative z-10 overflow-hidden flex items-center justify-center bg-graphite"
         >
@@ -163,13 +163,13 @@ const ScrollExpandMedia = ({
           className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none"
         >
           <motion.div
-            style={{ x: textXLeft, opacity: textOpacity, textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+            style={{ x: textXLeft, opacity: textOpacity, textShadow: '0 2px 10px rgba(0,0,0,0.5)', willChange: 'transform, opacity' }}
             className="font-black text-white text-4xl md:text-6xl uppercase tracking-tighter text-center"
           >
             {firstWord}
           </motion.div>
           <motion.div
-            style={{ x: textXRight, opacity: textOpacity, textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+            style={{ x: textXRight, opacity: textOpacity, textShadow: '0 2px 10px rgba(0,0,0,0.5)', willChange: 'transform, opacity' }}
             className="font-black text-white text-3xl md:text-5xl uppercase tracking-tighter text-center mt-1"
           >
             {restOfTitle}
@@ -178,7 +178,7 @@ const ScrollExpandMedia = ({
 
         {/* Date / Scroll Indicator */}
         <motion.div 
-          style={{ opacity: textOpacity }}
+          style={{ opacity: textOpacity, willChange: 'opacity' }}
           className="absolute bottom-10 flex flex-col items-center gap-2 text-white/70 font-normal uppercase tracking-[0.2em] text-[10px] md:text-xs z-20"
         >
           <span>{date}</span>

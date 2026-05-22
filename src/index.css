@@ -1,8 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Chamber Sans Pro';
+  src: url('/fonts/ChambersSansPro-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Basique Pro';
+  src: url('/fonts/basique-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Yaro Black';
+  src: url('/fonts/yaro-black.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @theme {
   --font-sans: "Inter", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  --font-chamber: "Chamber Sans Pro", "Inter", sans-serif;
+  --font-basique: "Basique Pro", "Inter", sans-serif;
+  --font-yaro: "Yaro Black", "Inter", sans-serif;
   --color-mango: #FFB000;
   --color-mango-ripe: #FF8A00;
   --color-saffron: #F26A1B;

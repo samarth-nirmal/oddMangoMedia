@@ -1398,7 +1398,7 @@ export default function App() {
 
                 <div
                   onClick={() => scrollTo("contact-us")}
-                  className="flex items-center gap-2 md:gap-3 cursor-pointer group hover:opacity-85 transition-opacity mt-4 md:mt-0"
+                  className="flex items-center gap-2 md:gap-3 cursor-pointer group hover:opacity-85 transition-opacity mt-1 md:mt-3"
                 >
                   <div className="flex flex-col text-right font-normal text-[9px] md:text-[13px] leading-[1.05] uppercase tracking-wider mt-1 md:mt-0">
                     <span>LET'S</span>

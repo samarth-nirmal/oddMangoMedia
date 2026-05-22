@@ -249,10 +249,16 @@ function SectionTitle({
   );
 }
 
-function FeaturedWorksSection({ containerRef }: { containerRef: React.RefObject<HTMLDivElement | null> }) {
+function FeaturedWorksSection({ containerRef, onLightboxChange }: { containerRef: React.RefObject<HTMLDivElement | null>, onLightboxChange?: (isOpen: boolean) => void }) {
   const sectionRef = React.useRef(null);
   const isInView = motionUseInView(sectionRef, { once: true, amount: 0.1 });
   const [selectedProject, setSelectedProject] = useState<null | typeof SLIDES[0]>(null);
+
+  useEffect(() => {
+    if (onLightboxChange) {
+      onLightboxChange(!!selectedProject);
+    }
+  }, [selectedProject, onLightboxChange]);
 
   return (
     <div id="featured-works" data-toc data-toc-title="Portfolio" ref={sectionRef} className="relative w-full pt-28 md:pt-36 pb-4 md:pb-8 px-6 md:px-12 bg-cloud text-midnight flex flex-col min-h-[50vh] justify-start">
@@ -373,6 +379,16 @@ function FeaturedWorksSection({ containerRef }: { containerRef: React.RefObject<
 function ServicesSection() {
   const [activeService, setActiveService] = useState<string | null>(null);
   const [hoveredService, setHoveredService] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Preload service images
+    SERVICES.forEach(service => {
+      service.images.forEach(imgUrl => {
+        const img = new Image();
+        img.src = imgUrl;
+      });
+    });
+  }, []);
 
   return (
     <div id="services" data-toc data-toc-title="Services" className="w-full bg-midnight/[0.03] pt-24 pb-24 md:pt-36 md:pb-40 px-6 overflow-hidden relative border-t border-midnight/5">
@@ -751,10 +767,10 @@ function TransformationSection() {
             <div className="flex items-end md:justify-end">
               <button 
                 onClick={handleToggle}
-                onMouseEnter={() => setIsHovering(true)}
+                onMouseEnter={() => window.innerWidth >= 768 && setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
                 onMouseMove={handleUpdatePosition}
-                className="group relative inline-flex items-center justify-center px-8 py-4 font-normal text-white uppercase tracking-widest overflow-hidden rounded-full border border-white/20 hover:border-white/50 transition-colors"
+                className="group relative inline-flex items-center justify-center px-8 py-4 font-normal text-white uppercase tracking-widest overflow-hidden rounded-full border border-white/20 md:hover:border-white/50 transition-colors"
               >
                 <span>Work With Us</span>
               </button>
@@ -807,10 +823,10 @@ function TransformationSection() {
             <div className="flex items-end md:justify-end">
               <button 
                 onClick={handleToggle}
-                onMouseEnter={() => setIsHovering(true)}
+                onMouseEnter={() => window.innerWidth >= 768 && setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
                 onMouseMove={handleUpdatePosition}
-                className="group relative inline-flex items-center justify-center px-8 py-4 font-normal text-midnight bg-cloud uppercase tracking-widest rounded-full hover:bg-white transition-colors hover:scale-105"
+                className="group relative inline-flex items-center justify-center px-8 py-4 font-normal text-midnight bg-cloud uppercase tracking-widest rounded-full md:hover:bg-white transition-colors md:hover:scale-105"
               >
                 <span>See the Difference</span>
               </button>
@@ -836,40 +852,56 @@ const TEAM_MEMBERS = [
     role: "Founder",
     image: "founder2.jpeg",
     bio: "Co-founder shaping narratives through story and visual art. Bringing meaning to content."
+  },
+  {
+    name: "Shyam Reddy",
+    role: "Founder",
+    image: "founder3.jpeg",
+    bio: "Driving the strategic vision and creative execution at the heart of our studio."
   }
 ];
 
 function MeetTheTeamSection() {
   const sectionRef = useRef(null);
   
+  useEffect(() => {
+    // Preload team member images to reduce layout shifts and ensure high-quality versions are ready
+    TEAM_MEMBERS.forEach(member => {
+      const img = new Image();
+      img.src = `${import.meta.env.BASE_URL}${member.image}`;
+    });
+  }, []);
+  
   return (
     <div id="team" data-toc data-toc-title="Team" ref={sectionRef} className="w-full py-24 md:py-40 px-6 md:px-12 bg-cloud text-midnight relative overflow-hidden">
       <div className="max-w-[1800px] mx-auto flex flex-col">
         <SectionTitle title="MEET THE TEAM" />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 mt-16 md:mt-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mt-16 md:mt-24">
           {TEAM_MEMBERS.map((member, i) => (
             <motion.div
               key={i}
               initial={{ 
                 opacity: 0, 
-                x: i % 2 === 0 ? -100 : 100,
+                x: i === 0 ? -100 : i === 1 ? 0 : 100,
+                y: i === 1 ? 100 : 0,
                 rotate: i % 2 === 0 ? -5 : 5
               }}
               whileInView={{ 
                 opacity: 1, 
                 x: 0,
+                y: 0,
                 rotate: 0
               }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 1.2, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="group flex flex-col"
             >
-              <div className="relative aspect-[4/5] overflow-hidden bg-midnight/5 border border-midnight/10 mb-8">
+              <div className="relative aspect-[4/5] overflow-hidden bg-midnight/5 mb-8">
                 <motion.img 
                   src={`${import.meta.env.BASE_URL}${member.image}`} 
                   alt={member.name}
-                  className="w-full h-full object-cover grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:scale-105"
+                  className="w-full h-full object-cover grayscale transition-all duration-700 md:hover:scale-105"
                   referrerPolicy="no-referrer"
                 />
               </div>
@@ -899,6 +931,7 @@ export default function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [interactiveCardOpen, setInteractiveCardOpen] = useState(false);
+  const [isProjectLightboxOpen, setIsProjectLightboxOpen] = useState(false);
   const [legalModalOpen, setLegalModalOpen] = useState(false);
   const [legalTab, setLegalTab] = useState<'privacy' | 'terms' | 'cookies'>('privacy');
   
@@ -910,6 +943,8 @@ export default function App() {
     offset: ["start start", "end end"]
   });
   const textY = useTransform(heroProgress, [0, 1], ["0vh", "-32vh"]);
+  const headerY = useTransform(heroProgress, [0, 0.3], ["0%", "-150%"]);
+  const headerOpacity = useTransform(heroProgress, [0, 0.2], [1, 0]);
   const bottomTextY = useTransform(heroProgress, [0.1, 0.9], ["50vh", "0vh"]);
   const bottomTextOpacity = useTransform(heroProgress, [0.1, 0.4], [0, 1]);
   const imageScale = useTransform(heroProgress, [0, 1], [1, 0.3]);
@@ -1002,7 +1037,9 @@ export default function App() {
       
       <div ref={containerRef} className="w-full bg-cloud selection:bg-midnight selection:text-cloud">
         <CustomCursor />
-        {!isLoading && <DynamicIslandTOC />}
+        {!isLoading && (
+          <DynamicIslandTOC isVisible={!(interactiveCardOpen || isProjectLightboxOpen)} />
+        )}
       
       {/* First Section: Hero content above the sticky nav */}
       <div ref={heroRef} className="relative w-full h-[400vh]">
@@ -1069,26 +1106,28 @@ export default function App() {
           </motion.div>
 
         {/* Top Header */}
-        <motion.header 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 5.0, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative flex justify-between items-start text-midnight"
-        >
-          <div className="cursor-pointer hover:opacity-75 transition-opacity -ml-4 -mt-3 md:-ml-8 md:-mt-6 lg:-ml-12">
-            <img src={`${import.meta.env.BASE_URL}mango-logo.png`} alt="Mango Logo" className="h-20 sm:h-28 md:h-36 lg:h-40 object-contain" />
-          </div>
-          
-          <div onClick={() => scrollTo('contact-us')} className="flex items-center gap-2 md:gap-3 cursor-pointer group hover:opacity-85 transition-opacity">
-            <div className="flex flex-col text-right font-normal text-[9px] md:text-[13px] leading-[1.05] uppercase tracking-wider mt-1 md:mt-0">
-              <span>LET'S</span>
-              <span>TALK</span>
+        <motion.div style={{ y: headerY, opacity: headerOpacity, willChange: 'transform, opacity' }} className="relative z-10 w-full">
+          <motion.header 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 5.0, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="relative flex justify-between items-start text-midnight"
+          >
+            <div className="cursor-pointer hover:opacity-75 transition-opacity -ml-4 -mt-3 md:-ml-8 md:-mt-6 lg:-ml-12">
+              <img src={`${import.meta.env.BASE_URL}mango-logo.png`} alt="Mango Logo" className="h-20 sm:h-28 md:h-36 lg:h-40 object-contain" />
             </div>
-            <motion.div className="w-8 h-8 md:w-11 md:h-11 rounded-full border-[1.5px] border-current flex items-center justify-center transition-all duration-300 group-hover:bg-saffron group-hover:text-white group-hover:border-saffron">
-              <ArrowUpRight strokeWidth={2.5} className="w-4 h-4 md:w-5 md:h-5 text-current transition-transform group-hover:rotate-45" />
-            </motion.div>
-          </div>
-        </motion.header>
+            
+            <div onClick={() => scrollTo('contact-us')} className="flex items-center gap-2 md:gap-3 cursor-pointer group hover:opacity-85 transition-opacity mt-2 md:mt-0">
+              <div className="flex flex-col text-right font-normal text-[9px] md:text-[13px] leading-[1.05] uppercase tracking-wider mt-1 md:mt-0">
+                <span>LET'S</span>
+                <span>TALK</span>
+              </div>
+              <motion.div className="w-8 h-8 md:w-11 md:h-11 rounded-full border-[1.5px] border-current flex items-center justify-center transition-all duration-300 group-hover:bg-saffron group-hover:text-white group-hover:border-saffron">
+                <ArrowUpRight strokeWidth={2.5} className="w-4 h-4 md:w-5 md:h-5 text-current transition-transform group-hover:rotate-45" />
+              </motion.div>
+            </div>
+          </motion.header>
+        </motion.div>
 
         {/* Main Content */}
         <main className="relative flex-1 flex flex-col items-center justify-center w-full">
@@ -1252,7 +1291,7 @@ export default function App() {
           Creative Studio Building Premium Brands
         </div>
 
-        <div className="text-left font-black text-[12vw] sm:text-[11vw] md:text-[10vw] flex flex-col leading-[0.85] tracking-tighter max-w-[95vw] md:max-w-[90vw] mx-auto z-10">
+        <div className="text-left font-black text-[16vw] sm:text-[11vw] md:text-[10vw] flex flex-col leading-[0.85] tracking-tighter max-w-[100vw] px-4 md:px-0 md:max-w-[90vw] mx-auto z-10 overflow-hidden">
           <motion.div 
             initial={{ opacity: 0, x: -150 }} 
             style={{ willChange: 'transform, opacity' }}
@@ -1310,7 +1349,7 @@ export default function App() {
         </div>
       </div>
       
-      {mounted && <FeaturedWorksSection containerRef={containerRef} />}
+      {mounted && <FeaturedWorksSection containerRef={containerRef} onLightboxChange={setIsProjectLightboxOpen} />}
       <ShortFilmSection />
       <ServicesSection />
       <WhyChooseUsSection />
@@ -1331,29 +1370,38 @@ export default function App() {
       )}
       
       {/* Floating Contact Component */}
-      <div className="fixed bottom-6 right-6 top-1/2 -translate-y-1/2 md:top-auto md:translate-y-0 md:bottom-8 md:right-8 z-[100] flex">
-        {/* Mobile Vertical Button */}
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setInteractiveCardOpen(true)}
-          className="md:hidden flex h-24 w-8 bg-cloud text-midnight shadow-[0_12px_45px_rgba(0,0,0,0.25)] border border-midnight/10 items-center justify-center rounded-l-xl transition-all duration-200 absolute right-0 -mr-6"
-          aria-label="Open interaction card"
-        >
-          <span className="text-[10px] font-bold tracking-widest uppercase" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>Card</span>
-        </motion.button>
-        
-        {/* Desktop Rounded Button */}
-        <motion.button
-          whileHover={{ scale: 1.1, backgroundColor: 'var(--color-saffron)', color: '#FFFFFF' }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => setInteractiveCardOpen(true)}
-          className="hidden md:flex w-14 h-14 rounded-full bg-cloud text-midnight shadow-[0_12px_45px_rgba(0,0,0,0.25)] border border-midnight/5 items-center justify-center transition-all duration-200 ease-out cursor-pointer group"
-          aria-label="Open interaction card"
-        >
-          <Headphones className="w-6 h-6 group-hover:rotate-[15deg] transition-transform" />
-        </motion.button>
-      </div>
+      <AnimatePresence>
+        {!(interactiveCardOpen || isProjectLightboxOpen) && (
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            className="fixed bottom-6 right-6 top-1/2 -translate-y-1/2 md:top-auto md:translate-y-0 md:bottom-8 md:right-8 z-[100] flex"
+          >
+            {/* Mobile Vertical Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setInteractiveCardOpen(true)}
+              className="md:hidden flex h-24 w-8 bg-cloud text-midnight shadow-[0_12px_45px_rgba(0,0,0,0.25)] border border-midnight/10 items-center justify-center rounded-l-xl transition-all duration-200 absolute right-0 -mr-6"
+              aria-label="Open interaction card"
+            >
+              <span className="text-[10px] font-bold tracking-widest uppercase" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>Card</span>
+            </motion.button>
+            
+            {/* Desktop Rounded Button */}
+            <motion.button
+              whileHover={{ scale: 1.1, backgroundColor: 'var(--color-saffron)', color: '#FFFFFF' }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setInteractiveCardOpen(true)}
+              className="hidden md:flex w-14 h-14 rounded-full bg-cloud text-midnight shadow-[0_12px_45px_rgba(0,0,0,0.25)] border border-midnight/5 items-center justify-center transition-all duration-200 ease-out cursor-pointer group"
+              aria-label="Open interaction card"
+            >
+              <Headphones className="w-6 h-6 group-hover:rotate-[15deg] transition-transform" />
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <InteractiveCard 
         isOpen={interactiveCardOpen} 

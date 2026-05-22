@@ -53,6 +53,7 @@ function CircleProgress({ percentage }: { percentage: number }) {
 
 type DynamicIslandTOCProps = {
   children?: ReactNode;
+  isVisible?: boolean;
   /**
    * CSS selector to find headings.
    * Defaults to common blog content wrappers and explicit [data-toc] elements.
@@ -62,6 +63,7 @@ type DynamicIslandTOCProps = {
 
 export function DynamicIslandTOC({
   children,
+  isVisible = true,
   selector = "article h1, article h2, article h3, article h4, .prose h1, .prose h2, .prose h3, .prose h4, [data-toc]",
 }: DynamicIslandTOCProps) {
   const [headings, setHeadings] = useState<HeadingData[]>([]);
@@ -178,9 +180,12 @@ export function DynamicIslandTOC({
         )}
       </AnimatePresence>
 
+      <AnimatePresence>
+      {isVisible && (
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 50, opacity: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         className="fixed bottom-[30px] left-1/2 z-[9999] flex -translate-x-1/2 flex-col items-center"
       >
@@ -317,6 +322,8 @@ export function DynamicIslandTOC({
         </AnimatePresence>
       </div>
     </motion.div>
+    )}
+    </AnimatePresence>
     </>
   );
 }
